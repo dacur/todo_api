@@ -27,8 +27,8 @@ RSpec.describe TodosController, type: :controller do
       it "does not create a todo list" do
         post :create, todo: invalid_params, format: :json
         expect(response).to have_http_status(422)
-        todo_json = JSON.parse(response.body)
-        expect(todo_json["title"]).to eq(nil)
+        errors_json = JSON.parse(response.body)
+        expect(errors_json["error"]).to include("create todo failed")
       end
     end
   end

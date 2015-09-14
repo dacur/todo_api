@@ -8,7 +8,7 @@ class TodosController < ApplicationController
     if @todo.save
       render json: @todo, status: 201
     else
-      render json: @todo, status: 422
+      render json: { error: "create todo failed" } , status: 422
     end
   end
 
@@ -26,7 +26,7 @@ class TodosController < ApplicationController
     if @todo.destroy
       render json: nil, status: :ok
     else
-      render json: @todo, status: :error
+      render json: { error: "could not delete todo" }, status: 422
     end
   end
 
