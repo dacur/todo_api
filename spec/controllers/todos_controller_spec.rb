@@ -1,7 +1,6 @@
 require "spec_helper"
 
 RSpec.describe TodosController, type: :controller do 
-	# subject(:todo) { create(:todo) }
 	describe "GET /index" do
 		let(:todo) { create(:todo) }
 		it "returns a todo list" do
@@ -27,7 +26,6 @@ RSpec.describe TodosController, type: :controller do
 			let(:invalid_params) { attributes_for(:todo, title: nil) }
 			it "does not create a todo list" do
 				post :create, todo: invalid_params, format: :json
-				# byebug
 				expect(response).to have_http_status(422)
 				todo_json = JSON.parse(response.body)
 				expect(todo_json["title"]).to eq(nil)
