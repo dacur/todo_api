@@ -28,7 +28,7 @@ RSpec.describe TodosController, type: :controller do
         post :create, todo: invalid_params, format: :json
         expect(response).to have_http_status(422)
         errors_json = JSON.parse(response.body)
-        expect(errors_json["error"]).to include("create todo failed")
+        expect(errors_json["title"]).to include("can't be blank")
       end
     end
   end
