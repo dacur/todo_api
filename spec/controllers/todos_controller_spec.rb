@@ -20,6 +20,7 @@ RSpec.describe TodosController, type: :controller do
         expect(response).to have_http_status(:created)
         todo_json = JSON.parse(response.body)
         expect(todo_json["title"]).to eq("Go shopping")
+        expect { post :create, todo: valid_params, format: :json}.to change{ Todo.count }.by(1)
       end
     end
     context "with invalid params" do
@@ -29,6 +30,7 @@ RSpec.describe TodosController, type: :controller do
         expect(response).to have_http_status(422)
         errors_json = JSON.parse(response.body)
         expect(errors_json["title"]).to include("can't be blank")
+        expect { post :create, todo: invalid_params, format: :json}.to_not change{ Todo.count }
       end
     end
   end
@@ -42,6 +44,7 @@ RSpec.describe TodosController, type: :controller do
       expect(response).to have_http_status(:ok)
       todo_json = JSON.parse(response.body)
       expect(todo_json["title"]).to eq("Eat lunch")
+      expect { put :update, id: todo.id, todo: new_params, format: :json}.to_not change{ Todo.count }
     end
   end
 
@@ -52,6 +55,10 @@ RSpec.describe TodosController, type: :controller do
       delete :destroy, id: todo.id
       expect(response).to have_http_status(:ok)
       expect(Todo.count).to eq(0)
+    end
+    it "deleting todo reduces todo count by 1" do
+      todo
+      expect { delete :destroy, id: todo.id}.to change{ Todo.count }.by(-1)
     end
   end
 end
